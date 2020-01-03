@@ -17,27 +17,35 @@ package cmd
 
 import (
 	"fmt"
-	"google.golang.org/api/calendar/v3"
 
-	"github.com/spf13/cobra"
 	"github.com/kvptkr/gocal-cli/pkg/auth"
+	"github.com/spf13/cobra"
 )
 
+//TODO: Add a flag to get coloured output consistent with a respective calendar's colour
 // listCmd represents the list command
+//`This gets a list of all available calendars from Google Calendar`,
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "A list of all available calendars",
+	Long:  `This gets a list of all available calendars from Google Calendar`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
-		srv := auth.GetClient()
-		calendars := srv.Calendars
-		calendar.CalendarList
+		counter := 1
+		fmt.Println("Available Calendars:")
+		calendarClient := auth.GetClient()
+		calendars, err := calendarClient.CalendarList.List().Do()
+		if err != nil {
+			fmt.Println("There was an error getting the available calendars")
+		}
+		if calendars.Items == nil {
+			fmt.Println("Sorry, no calendars were found")
+		} else {
+			for _, calendarName := range calendars.Items {
+				fmt.Println(fmt.Sprintf("[%d]", counter) + calendarName.Summary)
+				counter++
+			}
+		}
+
 	},
 }
 

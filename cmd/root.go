@@ -31,9 +31,6 @@ var rootCmd = &cobra.Command{
 	Use:   "gocal-cli",
 	Short: "A lightweight extensible Google Calendar CLI",
 	Long: `An easy-to-use lightweight and extensible Google Calendar CLI`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -72,14 +69,12 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".gocal-cli" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".gocal-cli")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}

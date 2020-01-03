@@ -17,9 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"google.golang.org/api/calendar/v3"
 	"log"
 	"time"
+
 	"github.com/kvptkr/gocal-cli/pkg/auth"
 	"github.com/spf13/cobra"
 )
@@ -28,11 +28,8 @@ import (
 var nextCmd = &cobra.Command{
 	Use:   "next",
 	Short: "Displays the next ten events",
-	Long: `Displays the next ten events on your calendar, regardless of what calendar they might appear on`,
-	Run: func(cmd *cobra.Command, args []string) {
-		srv := auth.GetClient()
-		getNextTenEvents(srv)
-	},
+	Long:  `Displays the next ten events on your calendar, regardless of what calendar they might appear on`,
+	Run:   getNextTenEvents,
 }
 
 func init() {
@@ -48,7 +45,9 @@ func init() {
 	// is called directly, e.g.:
 	// nextCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-func getNextTenEvents(calendar *calendar.Service) {
+func getNextTenEvents(cmd *cobra.Command, args []string) {
+
+	calendar := auth.GetClient()
 	t := time.Now().Format(time.RFC3339)
 	events, err := calendar.Events.List("primary").ShowDeleted(false).
 		SingleEvents(true).TimeMin(t).MaxResults(10).OrderBy("startTime").Do()
