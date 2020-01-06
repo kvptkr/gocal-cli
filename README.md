@@ -14,7 +14,7 @@ During the course of my last coop I often lamented to my coworkers both how disr
 
 
 ## Commands
-`next` - the og command, lists your next ten events
+`next` - the og command, lists your next ten events  
 `list` - gives a list of all the available calendars
 
 ## Contributions
