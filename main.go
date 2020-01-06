@@ -16,7 +16,7 @@ limitations under the License.
 package main
 
 import (
-	"github.com/kvptkr/gocal-cli/cmd"
+	"github.com/kvptkr/gocal-cli/pkg/cmd"
 )
 
 func main() {

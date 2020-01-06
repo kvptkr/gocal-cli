@@ -1,11 +1,11 @@
 package auth
 
 import (
-	"fmt"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/calendar/v3"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -14,24 +14,24 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func GetClient() *calendar.Service{
+func GetClient() (*calendar.Service, error) {
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
+		return nil, err
 	}
 
 	// If modifying these scopes, delete your previously saved token.json.
-	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
+	config, err := google.ConfigFromJSON(b, calendar.CalendarScope)
 	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", err)
+		return nil, err
 	}
 	client := getClient(config)
 
 	srv, err := calendar.New(client)
 	if err != nil {
-		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+		return nil, err
 	}
-	return srv
+	return srv, nil
 }
 
 // Retrieve a token, saves the token, then returns the generated client.
